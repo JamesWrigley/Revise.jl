@@ -1,12 +1,11 @@
 module ReviseREPLExt
 
-import REPL
-using Revise: Revise, revision_queue, revise, pkgdatas, pkgdatas_lock, PkgData, FileInfo,
-              ModuleExprsInfos, parse_source!, instantiate_sigs!, unwrap, isexpr, revise_first,
-              LoweredCodeUtils, is_quotenode_egal, @warnpcfail
-
+using REPL: REPL
 using Base: PkgId
-
+using Base.Meta: isexpr
+using Revise: @warnpcfail, FileInfo, LoweredCodeUtils, ModuleExprsInfos, Revise,
+    instantiate_sigs!, is_quotenode_egal, parse_source!, pkgdatas, revise, revise_first,
+    revision_queue, unwrap
 
 const original_repl_prefix = Ref{Union{String, Function, Nothing}}(nothing)
 
