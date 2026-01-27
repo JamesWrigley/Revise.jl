@@ -1498,6 +1498,13 @@ function revise_first(ex)
                 exu = exu.args[2]
             end
         end
+
+        # Try to detect shell mode in the REPL. Might also falsely trigger for certain
+        # `julia>` mode commands, but 🤷
+        if isexpr(exu, :call, 3) && exu.args[1] == :(Base.repl_cmd)
+            return ex
+        end
+
         if isa(exu, Expr)
             exu.head === :call && length(exu.args) == 1 && exu.args[1] === :exit && return ex
             lhsrhs = LoweredCodeUtils.get_lhs_rhs(exu)
