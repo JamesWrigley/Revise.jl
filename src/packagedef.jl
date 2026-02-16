@@ -611,12 +611,11 @@ function init_watching(pkgdata::PkgData, files=srcfiles(pkgdata))
                 fwatcher = TaskThunk(revise_file_queued, (pkgdata, file))
                 schedule(Task(fwatcher))
             else
-                already_watching_dir || push!(udirs, dir)
+                already_watching_dir || push!(udirs, dirfull)
             end
         end
     end
-    for dir in udirs
-        dirfull = joinpath(basedir(pkgdata), dir)
+    for dirfull in udirs
         @lock watched_files_lock updatetime!(watched_files[dirfull])
         if !watching_files[]
             dwatcher = TaskThunk(revise_dir_queued, (dirfull,))
